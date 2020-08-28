@@ -1,20 +1,35 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const passport = require('passport');
+const session = require('express-session');
 
 const userRouter = require('./routes/user');
+require('./config/config')(passport);
+const { hostname, port } = require('./constants/constants');
+const { dbConnection } = require('./config/db');
 
-const url = 'mongodb://localhost:127.0.0.1:27017/User';
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+dbConnection();
 
-const hostname = 'localhost';
-const port = 5000;
-
+// --- App config
 const app = express();
+
+// body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(userRouter);
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// --- Routes
+app.use('/', userRouter);
 
 const server = http.createServer(app);
 server.listen(port, hostname, () => {
