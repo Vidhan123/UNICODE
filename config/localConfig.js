@@ -14,12 +14,12 @@ module.exports = (passport) => {
         }
         await bcrypt.compare(password, user.password, (error, isMatch) => {
           if (error) throw error;
-          if (isMatch) {
-            return done(null, user);
+          if (!isMatch) {
+            return done(null, false, { message: 'Incorrect Password' });
           }
-          return done(null, false, { message: 'Incorrect Password' });
+          return done(null, user);
         });
-        return done(null, user);
+        return true;
       });
     })
   );

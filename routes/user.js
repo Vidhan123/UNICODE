@@ -14,7 +14,8 @@ userRouter.get('/', (req, res) => {
 userRouter
   .route('/login')
   .get((req, res) => {
-    res.send('Login Page');
+    const msg = req.query.valid === 'no' ? 'Invalid Credentials' : '';
+    res.send(`Login Page\n${msg}`);
   })
   .post(auth.login);
 
@@ -25,8 +26,8 @@ userRouter
   })
   .post(auth.register);
 
-userRouter.get('/dashboard', (req, res) => {
-  res.send('Dashboard');
+userRouter.get('/dashboard', auth.ensureAuthenticated, (req, res) => {
+  res.send(`${req.user.name}'s Dashboard`);
 });
 
 // oauth routes
