@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const auth = require('../middleware/auth');
+const oauth = require('../middleware/oauth');
 
 const userRouter = express.Router();
 userRouter.use(bodyParser.json());
@@ -26,6 +27,12 @@ userRouter
 
 userRouter.get('/dashboard', (req, res) => {
   res.send('Dashboard');
+});
+
+// oauth routes
+userRouter.get('/auth/google', oauth.login);
+userRouter.get('/auth/google/callback', oauth.callback, (req, res) => {
+  res.redirect('/dashboard');
 });
 
 module.exports = userRouter;

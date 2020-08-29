@@ -5,7 +5,10 @@ const passport = require('passport');
 const session = require('express-session');
 
 const userRouter = require('./routes/user');
-require('./config/config')(passport);
+
+require('./config/localConfig')(passport);
+require('./config/oauthConfig')(passport);
+
 const { hostname, port } = require('./constants/constants');
 const { dbConnection } = require('./config/db');
 
