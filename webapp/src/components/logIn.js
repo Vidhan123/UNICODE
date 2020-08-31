@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState }  from 'react';
+import { useLocation } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Link, Paper, Grid, Typography} from '@material-ui/core';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Checkbox from '@material-ui/core/Checkbox';
@@ -39,9 +40,27 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  hidden: {
+    display: 'none',
+  },
+  show: {
+    display: 'block',
+    textAlign: 'center',
+    color: '#ff0000',
+  },
 }));
 
 export default function SignInSide() {
+  const [warn,setWarn] = useState(false);
+  let location = useLocation();
+
+  useEffect(() => {
+    const temp = location.search;
+    const required = temp.slice(1,temp.length);
+    const isInValid = required === 'Invalid' ? true : false;
+    setWarn(isInValid);
+  }, [location.search])
+
   const classes = useStyles();
   return (
     <Grid container component="main" className={classes.root}>
@@ -61,14 +80,14 @@ export default function SignInSide() {
           color="secondary"
           className={classes.button}
           startIcon={<img src={require('../assets/images/googleicon.png')} height='45' alt="googleicon" />}
-          href='/auth/google'
+          href='http://localhost:9000/auth/google'
           >
             Login with Google
           </Button>
           <Typography component="h6" variant="h6">
             or
           </Typography>
-          <form className={classes.form} onsubmit="return validate()" method="POST">
+          <form className={classes.form} method="POST" action="http://localhost:9000/login">
             <TextField
               variant="outlined"
               margin="normal"
@@ -95,6 +114,9 @@ export default function SignInSide() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
+            <Typography component="h6" variant="h6" className={warn ? classes.show : classes.hidden}>
+              Invalid Credentials
+            </Typography>
             <Button
               type="submit"
               fullWidth

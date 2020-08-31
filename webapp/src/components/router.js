@@ -62,7 +62,7 @@ export default function userRouter() {
       <Switch>
         <Route path="/logIn"><SignInSide/></Route>
         <Route path="/register"><SignUp /></Route>
-        <Route path="/"><Home /></Route>
+        <Route exact path="/"><Home /></Route>
       </Switch>
       </Router>
     </React.Fragment>

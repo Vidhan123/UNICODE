@@ -3,6 +3,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
+const cors = require('cors');
 
 const userRouter = require('./routes/user');
 
@@ -16,6 +17,8 @@ dbConnection();
 
 // --- App config
 const app = express();
+
+app.use(cors());
 
 // body-parser
 app.use(bodyParser.urlencoded({ extended: false }));

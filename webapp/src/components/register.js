@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Link, Grid, Typography, Container, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,10 +30,30 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  hidden: {
+    display: 'none',
+  },
+  show: {
+    display: 'block',
+    width: '100%',
+    textAlign: 'center',
+    color: '#ff0000',
+  },
 }));
 
 export default function SignUp() {
+  const [isChecked, setChecked] = useState({value:true, initial:true});
+  const [warn,setWarn] = useState(false);
+  let location = useLocation();
+
+  useEffect(() => {
+    const temp = location.search;
+    const required = temp.slice(1,temp.length);
+    const isInValid = required === 'Invalid' ? true : false;
+    setWarn(isInValid);
+  }, [location.search])
   const classes = useStyles();
+  
   return (
     <Container component="main" maxWidth="xs" className={classes.root}>
       <CssBaseline />
@@ -49,15 +70,18 @@ export default function SignUp() {
         color="secondary"
         className={classes.button}
         startIcon={<img src={require('../assets/images/googleicon.png')} height='45' alt="googleicon" />}
-        href='/auth/google'
+        href='http://localhost:9000/auth/google'
         >
           Continue with Google
         </Button>
         <Typography component="h6" variant="h6">
           or
         </Typography>
-        <form className={classes.form} onsubmit="return validate()" method="POST">
+        <form className={classes.form} method="POST" action="http://localhost:9000/register">
           <Grid container spacing={2}>
+            <Typography component="h6" variant="h6" className={warn ? classes.show : classes.hidden}>
+              This e-mail is already registered
+            </Typography>
             <FormControl component="fieldset">
               <FormLabel component="legend">&nbsp;&nbsp;&nbsp;&nbsp;Role</FormLabel>
               <RadioGroup row aria-label="role" name="role" defaultValue="start">
@@ -66,18 +90,22 @@ export default function SignUp() {
                   control={<Radio color="primary" />}
                   label="Customer"
                   labelPlacement="start"
+                  checked={isChecked.initial}
+                  onChange={(e) => setChecked(prev => !prev)}
                 />
                 <FormControlLabel
                   value="driver"
                   control={<Radio color="primary" />}
                   label="Driver"
                   labelPlacement="start"
+                  onChange={(e) => setChecked(prev => !prev)}
                 />
                 <FormControlLabel
                   value="admin"
                   control={<Radio color="primary" />}
                   label="Admin"
                   labelPlacement="start"
+                  onChange={(e) => setChecked(prev => !prev)}
                 />
               </RadioGroup>
             </FormControl>
@@ -146,18 +174,6 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password2"
-                label="Confirm Password"
-                type="password"
-                id="password2"
                 autoComplete="current-password"
               />
             </Grid>

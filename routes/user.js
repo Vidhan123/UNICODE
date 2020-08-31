@@ -8,26 +8,25 @@ const userRouter = express.Router();
 userRouter.use(bodyParser.json());
 
 userRouter.get('/', (req, res) => {
-  res.send('Home Page');
+  res.redirect('http://localhost:3000');
 });
 
 userRouter
   .route('/login')
   .get((req, res) => {
-    const msg = req.query.valid === 'no' ? 'Invalid Credentials' : '';
-    res.send(`Login Page\n${msg}`);
+    res.redirect('http://localhost:3000/login');
   })
   .post(auth.login);
 
 userRouter
   .route('/register')
   .get((req, res) => {
-    res.send('Registration Page');
+    res.redirect('http://localhost:3000/register');
   })
   .post(auth.register);
 
 userRouter.get('/dashboard', auth.ensureAuthenticated, (req, res) => {
-  res.send(`${req.user.name}'s Dashboard`);
+  res.redirect(`http://localhost:3000/dashboard/?${req.user.name}`);
 });
 
 // oauth routes
