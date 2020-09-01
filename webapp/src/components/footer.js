@@ -19,7 +19,7 @@ export default function Footer() {
       <Container maxWidth="md" component="footer" className={classes.footer}>
         <Box>
           <Typography variant="body2" color="textSecondary" align="center">
-            Copyright © VUber 2020
+            Vidhan Shah © VUber 2020
           </Typography>
         </Box>
       </Container>
