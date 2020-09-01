@@ -3,7 +3,7 @@ const passport = require('passport');
 const User = require('../models/users');
 
 exports.login = passport.authenticate('local', {
-  successRedirect: '/dashboard',
+  // successRedirect: '/dashboard',
   failureRedirect: 'http://localhost:3000/login?Invalid',
 });
 

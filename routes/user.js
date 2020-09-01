@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const auth = require('../middleware/auth');
 const oauth = require('../middleware/oauth');
+const jwtauth = require('../middleware/jwtauth');
 
 const userRouter = express.Router();
 userRouter.use(bodyParser.json());
@@ -16,7 +17,7 @@ userRouter
   .get((req, res) => {
     res.redirect('http://localhost:3000/login');
   })
-  .post(auth.login);
+  .post(auth.login, jwtauth.login);
 
 userRouter
   .route('/register')
