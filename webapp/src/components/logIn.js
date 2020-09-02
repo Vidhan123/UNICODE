@@ -4,51 +4,7 @@ import { Avatar, Button, CssBaseline, TextField, Link, Paper, Grid, Typography} 
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Checkbox from '@material-ui/core/Checkbox';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: 'auto',
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-  image: {
-    backgroundImage: 'url('+require('../assets/images/loginpage.jpg')+')',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-    paddingTop: theme.spacing(2),
-    borderTop: `1px solid ${theme.palette.divider}`,
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  hidden: {
-    display: 'none',
-  },
-  show: {
-    display: 'block',
-    textAlign: 'center',
-    color: '#ff0000',
-  },
-}));
+import useLoginStyles from './customStyles/loginStyles';
 
 export default function SignInSide() {
   const [warn,setWarn] = useState(false);
@@ -61,7 +17,7 @@ export default function SignInSide() {
     setWarn(isInValid);
   }, [location.search])
 
-  const classes = useStyles();
+  const classes = useLoginStyles();
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -82,7 +38,7 @@ export default function SignInSide() {
           startIcon={<img src={require('../assets/images/googleicon.png')} height='45' alt="googleicon" />}
           href='http://localhost:9000/auth/google'
           >
-            Login with Google
+            Continue with Google
           </Button>
           <Typography component="h6" variant="h6">
             or

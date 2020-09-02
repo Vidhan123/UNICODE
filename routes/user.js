@@ -32,8 +32,6 @@ userRouter.get('/dashboard', auth.ensureAuthenticated, (req, res) => {
 
 // oauth routes
 userRouter.get('/auth/google', oauth.login);
-userRouter.get('/auth/google/callback', oauth.callback, (req, res) => {
-  res.redirect('/dashboard');
-});
+userRouter.get('/auth/google/callback', oauth.callback, jwtauth.login);
 
 module.exports = userRouter;

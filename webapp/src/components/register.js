@@ -2,48 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Link, Grid, Typography, Container, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: 'auto',
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-    paddingTop: theme.spacing(2),
-    borderTop: `1px solid ${theme.palette.divider}`,
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  hidden: {
-    display: 'none',
-  },
-  show: {
-    display: 'block',
-    width: '100%',
-    textAlign: 'center',
-    color: '#ff0000',
-  },
-}));
+import useRegisterStyles from './customStyles/registerStyles';
+import useValidation from './validation/useValidation';
 
 export default function SignUp() {
   const [isChecked, setChecked] = useState({value:true, initial:true});
   const [warn,setWarn] = useState(false);
+  let initVals = { firstName: '', lastName: '', email: '', mobileNo: '', password: '', address: '' };
+  const [vals,setVal] = useState(initVals);
+
+  const [err,validate] = useValidation(vals);
+
   let location = useLocation();
 
   useEffect(() => {
@@ -52,7 +21,17 @@ export default function SignUp() {
     const isInValid = required === 'Invalid' ? true : false;
     setWarn(isInValid);
   }, [location.search])
-  const classes = useStyles();
+  const classes = useRegisterStyles();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setVal({...vals, [name]: value})
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    validate(vals);
+  };
   
   return (
     <Container component="main" maxWidth="xs" className={classes.root}>
@@ -77,7 +56,12 @@ export default function SignUp() {
         <Typography component="h6" variant="h6">
           or
         </Typography>
-        <form className={classes.form} method="POST" action="http://localhost:9000/register">
+        <form
+          className={classes.form}
+          id="myForm"
+          onSubmit={handleSubmit}
+          method="POST"
+          action="http://localhost:9000/register">
           <Grid container spacing={2}>
             <Typography component="h6" variant="h6" className={warn ? classes.show : classes.hidden}>
               This e-mail is already registered
@@ -119,6 +103,8 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                error={err.fname}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -130,6 +116,8 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                error={err.lname}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -141,6 +129,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                error={err.email}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -152,6 +142,8 @@ export default function SignUp() {
                 label="Mobile Number"
                 name="mobileNo"
                 autoComplete="mobileNo"
+                error={err.num}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -163,6 +155,8 @@ export default function SignUp() {
                 label="Address"
                 name="address"
                 autoComplete="address"
+                error={err.address}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -175,6 +169,8 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                error={err.password}
+                onChange={handleChange}
               />
             </Grid>
             {/* <Grid item xs={12}>

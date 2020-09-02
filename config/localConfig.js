@@ -12,6 +12,9 @@ module.exports = (passport) => {
         if (!user) {
           return done(null, false, { message: 'You are not registered' });
         }
+        if (!user.password) {
+          return done(null, false);
+        }
         await bcrypt.compare(password, user.password, (error, isMatch) => {
           if (error) throw error;
           if (!isMatch) {
