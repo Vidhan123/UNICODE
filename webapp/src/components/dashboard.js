@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
+import { UserContext } from './Contexts';
+import axios from 'axios';
 
 function Dashboard() {
   const [myName,setMyName] = useState('');
-  let location = useLocation();
-
+  const user = useContext(UserContext);
+  
   useEffect(() => {
-    const temp = location.search;
-    if (temp === '') {
-      window.location.href = 'http://localhost:9000/dashboard';
-    }
-    const required = temp.slice(1,temp.length).split('%20');
-    setMyName(`${required[0]} ${required[1]}`);
+    axios.get('http://localhost:9000/dashboard')
+      .then((res) => console.log(res));
   }, [])
 
   return(
-    <h1>Welcome {myName}</h1>
+    <h1>Welcome</h1>
   )
 }
 

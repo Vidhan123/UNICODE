@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http');
-const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
@@ -18,10 +17,10 @@ dbConnection();
 // --- App config
 const app = express();
 
-app.use(cors());
-
 // body-parser
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
+
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
 app.use(
   session({

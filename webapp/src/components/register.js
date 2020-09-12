@@ -1,36 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Avatar, Button, CssBaseline, TextField, Link, Grid, Typography, Container, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel} from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
+import { Avatar, Button, CssBaseline, TextField, Grid, Typography, Container, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import useRegisterStyles from './customStyles/registerStyles';
 import useValidation from './validation/useValidation';
 
 export default function SignUp() {
+  const history = useHistory();
   const [isChecked, setChecked] = useState({value:true, initial:true});
-  const [warn,setWarn] = useState(false);
-  let initVals = { firstName: '', lastName: '', email: '', mobileNo: '', password: '', address: '' };
+  const [warn,setWarn] = useState('');
+  let initVals = { firstName: '', lastName: '', email: '', mobileNo: '', password: '', address: '', role: '' };
   const [vals,setVal] = useState(initVals);
 
-  const [err,validate] = useValidation(vals);
-
-  let location = useLocation();
+  const [err,validate] = useValidation();
 
   useEffect(() => {
-    const temp = location.search;
-    const required = temp.slice(1,temp.length);
-    const isInValid = required === 'Invalid' ? true : false;
-    setWarn(isInValid);
-  }, [location.search])
+    if (warn === 'Registered Successfully') history.push('/login');
+  }, [warn])
   const classes = useRegisterStyles();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if(name === 'role') setChecked(prev => !prev);
     setVal({...vals, [name]: value})
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    validate(vals);
+    validate(vals,setWarn);
   };
   
   return (
@@ -56,15 +53,10 @@ export default function SignUp() {
         <Typography component="h6" variant="h6">
           or
         </Typography>
-        <form
-          className={classes.form}
-          id="myForm"
-          onSubmit={handleSubmit}
-          method="POST"
-          action="http://localhost:9000/register">
+        <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Typography component="h6" variant="h6" className={warn ? classes.show : classes.hidden}>
-              This e-mail is already registered
+            <Typography component="h6" variant="h6" className={warn !== '' ? classes.show : classes.hidden}>
+              {warn}
             </Typography>
             <FormControl component="fieldset">
               <FormLabel component="legend">&nbsp;&nbsp;&nbsp;&nbsp;Role</FormLabel>
@@ -75,21 +67,21 @@ export default function SignUp() {
                   label="Customer"
                   labelPlacement="start"
                   checked={isChecked.initial}
-                  onChange={(e) => setChecked(prev => !prev)}
+                  onChange={handleChange}
                 />
                 <FormControlLabel
                   value="driver"
                   control={<Radio color="primary" />}
                   label="Driver"
                   labelPlacement="start"
-                  onChange={(e) => setChecked(prev => !prev)}
+                  onChange={handleChange}
                 />
                 <FormControlLabel
                   value="admin"
                   control={<Radio color="primary" />}
                   label="Admin"
                   labelPlacement="start"
-                  onChange={(e) => setChecked(prev => !prev)}
+                  onChange={handleChange}
                 />
               </RadioGroup>
             </FormControl>
@@ -191,7 +183,7 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link to="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

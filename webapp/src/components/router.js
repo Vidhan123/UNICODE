@@ -6,6 +6,7 @@ import { ExitToApp, PersonAdd } from '@material-ui/icons';
 import Home from './home';
 import SignInSide from './logIn';
 import SignUp from './register'; 
+import Dashboard from './dashboard';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -62,6 +63,7 @@ export default function userRouter() {
       <Switch>
         <Route path="/logIn"><SignInSide/></Route>
         <Route path="/register"><SignUp /></Route>
+        <Route path="/dashboard"><Dashboard /></Route>
         <Route exact path="/"><Home /></Route>
       </Switch>
       </Router>

@@ -1,21 +1,40 @@
 import React, { useEffect, useState }  from 'react';
-import { useLocation } from 'react-router-dom';
-import { Avatar, Button, CssBaseline, TextField, Link, Paper, Grid, Typography} from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
+import { Avatar, Button, CssBaseline, TextField, Paper, Grid, Typography} from '@material-ui/core';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Checkbox from '@material-ui/core/Checkbox';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import useLoginStyles from './customStyles/loginStyles';
+// import { UserProvider } from './Contexts';
+import axios from 'axios';
 
 export default function SignInSide() {
-  const [warn,setWarn] = useState(false);
-  let location = useLocation();
-
+  let initVals = { email: '', password: '' };
+  const [vals,setVal] = useState(initVals);
+  const [warn,setWarn] = useState('');
+  const [Res,setRes] = useState({});
+  const history = useHistory();
+  const { email, password } = vals;
+  
   useEffect(() => {
-    const temp = location.search;
-    const required = temp.slice(1,temp.length);
-    const isInValid = required === 'Invalid' ? true : false;
-    setWarn(isInValid);
-  }, [location.search])
+    if (warn === 'Logged In') history.push('/dashboard');
+  }, [warn,Res])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setVal({...vals, [name]: value})
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:9000/login', { 
+        email,
+        password
+      }).then((res) => {
+        setRes(res.data.details);
+        setWarn(res.data.msg);
+      });
+  };
 
   const classes = useLoginStyles();
   return (
@@ -43,7 +62,7 @@ export default function SignInSide() {
           <Typography component="h6" variant="h6">
             or
           </Typography>
-          <form className={classes.form} method="POST" action="http://localhost:9000/login">
+          <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -54,6 +73,7 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={handleChange}
             />
             <TextField
               variant="outlined"
@@ -65,13 +85,14 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handleChange}
             />
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-            <Typography component="h6" variant="h6" className={warn ? classes.show : classes.hidden}>
-              Invalid Credentials
+            <Typography component="h6" variant="h6" className={warn !== '' ? classes.show : classes.hidden}>
+              {warn}
             </Typography>
             <Button
               type="submit"
@@ -89,7 +110,7 @@ export default function SignInSide() {
                 </Link>
               </Grid> */}
               <Grid item>
-                <Link href="/register" variant="body2">
+                <Link to="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

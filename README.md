@@ -29,8 +29,9 @@
 
 - HTML5
 - CSS3
-- ReactJs                 (16.13.1)
-- Material-UI             (4.9.0+)
+- ReactJs                 (16.13+)
+- Material-UI             (4.9.0)
+- axios                   (0.20.0)
 - ES6 JavaScript
 
 
