@@ -6,6 +6,7 @@ import { Avatar, Button, CssBaseline, TextField, Paper, Grid, Typography} from '
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import useLoginStyles from './customStyles/loginStyles';
 // import { UserProvider } from './Contexts';
+import useDetails from './useDetails';
 import axios from 'axios';
 
 export default function SignInSide() {
@@ -16,14 +17,20 @@ export default function SignInSide() {
   const history = useHistory();
   const { email, password } = vals;
   
+  const [setData, getData, user] = useDetails();
+
   useEffect(() => {
-    if (warn === 'Logged In') history.push('/dashboard');
+    const handler = async () => {
+      await setData(Res);
+      if (warn === 'Logged In') history.push('/dashboard');
+    } 
+    handler();
   }, [warn,Res])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setVal({...vals, [name]: value})
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();

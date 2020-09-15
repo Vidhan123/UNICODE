@@ -1,19 +1,18 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
-import { UserContext } from './Contexts';
+import React, { useEffect } from 'react';
+import useDetails from './useDetails';
 import axios from 'axios';
 
 function Dashboard() {
-  const [myName,setMyName] = useState('');
-  const user = useContext(UserContext);
+  const [setData, getData, user] = useDetails();
   
   useEffect(() => {
-    axios.get('http://localhost:9000/dashboard')
+    axios.get('http://localhost:9000/dashboard', {withCredentials:true})
       .then((res) => console.log(res));
+    getData();
   }, [])
 
   return(
-    <h1>Welcome</h1>
+    <h1>Welcome {user.name}</h1>
   )
 }
 
