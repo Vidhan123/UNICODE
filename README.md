@@ -8,7 +8,7 @@
 .
 ├── config/               
 ├── constants/            
-├── middleware/        
+├── controllers/        
 ├── models/               
 ├── routes/                 
 ├── webapp/                 

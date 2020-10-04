@@ -43,7 +43,9 @@ function useValidation() {
         password, 
         address, 
         role
-      }).then((res) => setWarn(res.data.msg));
+      })
+      .then((res) => setWarn(res.data.msg))
+      .catch((err) => console.log(err));
     } 
   };
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { AppBar, Button, CssBaseline, Toolbar, Typography, Box } from '@material-ui/core';
+import { AppBar, Button, CssBaseline, Toolbar, Typography, Box, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { ExitToApp, PersonAdd } from '@material-ui/icons';
+import { ExitToApp, PersonAdd, PowerSettingsNew } from '@material-ui/icons';
 import Home from './home';
 import SignInSide from './logIn';
 import SignUp from './register'; 
 import Dashboard from './dashboard';
+import useAuth from './useAuth';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function userRouter() {
   const classes = useStyles();
+  const [authorise, unauthorise, ProtectedRoutes] = useAuth();
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -36,6 +39,17 @@ export default function userRouter() {
               <img src={require('../assets/images/vuberlogo.png')} height="60" alt="logo" />
             </Link>
           </Typography>
+          <Switch>
+
+          <ProtectedRoutes path="/dashboard">
+            <Link to='/'>
+            <IconButton onClick={() => unauthorise()}>
+              <PowerSettingsNew/>
+            </IconButton>
+            </Link>
+          </ProtectedRoutes>
+
+          <Route path='/'>
             {/* For sm-xl screen sizes */}
             <Box display={{ xs: 'none', sm: 'block' }}>
                 <Link to="/logIn">
@@ -58,12 +72,14 @@ export default function userRouter() {
                   </Button>
                 </Link>
             </Box>
+          </Route>
+        </Switch>
         </Toolbar>
       </AppBar>
       <Switch>
         <Route path="/logIn"><SignInSide/></Route>
         <Route path="/register"><SignUp /></Route>
-        <Route path="/dashboard"><Dashboard /></Route>
+        <ProtectedRoutes path="/dashboard"><Dashboard /></ProtectedRoutes>
         <Route exact path="/"><Home /></Route>
       </Switch>
       </Router>

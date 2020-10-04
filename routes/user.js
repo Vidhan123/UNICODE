@@ -1,8 +1,8 @@
 const express = require('express');
 
-const auth = require('../middleware/auth');
-const oauth = require('../middleware/oauth');
-const jwtauth = require('../middleware/jwtauth');
+const auth = require('../controllers/auth');
+const oauth = require('../controllers/oauth');
+const jwtauth = require('../controllers/jwtauth');
 
 const userRouter = express.Router();
 userRouter.use(express.json());

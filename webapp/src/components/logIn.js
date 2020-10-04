@@ -1,5 +1,5 @@
 import React, { useEffect, useState }  from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Paper, Grid, Typography} from '@material-ui/core';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Checkbox from '@material-ui/core/Checkbox';
@@ -7,6 +7,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import useLoginStyles from './customStyles/loginStyles';
 // import { UserProvider } from './Contexts';
 import useDetails from './useDetails';
+import useAuth from './useAuth';
 import axios from 'axios';
 
 export default function SignInSide() {
@@ -18,11 +19,19 @@ export default function SignInSide() {
   const { email, password } = vals;
   
   const [setData, getData, user] = useDetails();
+  const [authorise, unauthorise, ProtectedRoutes] = useAuth();
+
+  const RedirectTo = () => {
+    if (warn === 'Logged In') {
+      authorise();
+      history.push('/dashboard');
+    }
+  };
 
   useEffect(() => {
     const handler = async () => {
       await setData(Res);
-      if (warn === 'Logged In') history.push('/dashboard');
+      RedirectTo();
     } 
     handler();
   }, [warn,Res])
@@ -37,10 +46,12 @@ export default function SignInSide() {
     axios.post('http://localhost:9000/login', { 
         email,
         password
-      }).then((res) => {
+      })
+      .then((res) => {
         setRes(res.data.details);
         setWarn(res.data.msg);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const classes = useLoginStyles();
@@ -63,6 +74,7 @@ export default function SignInSide() {
           className={classes.button}
           startIcon={<img src={require('../assets/images/googleicon.png')} height='45' alt="googleicon" />}
           href='http://localhost:9000/auth/google'
+          disabled
           >
             Continue with Google
           </Button>

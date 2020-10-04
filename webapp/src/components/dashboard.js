@@ -7,7 +7,8 @@ function Dashboard() {
   
   useEffect(() => {
     axios.get('http://localhost:9000/dashboard', {withCredentials:true})
-      .then((res) => console.log(res));
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
     getData();
   }, [])
 

@@ -47,6 +47,7 @@ export default function SignUp() {
         className={classes.button}
         startIcon={<img src={require('../assets/images/googleicon.png')} height='45' alt="googleicon" />}
         href='http://localhost:9000/auth/google'
+        disabled
         >
           Continue with Google
         </Button>
