@@ -8,10 +8,12 @@ import SignInSide from './logIn';
 import SignUp from './register'; 
 import Dashboard from './dashboard';
 import useAuth from './useAuth';
+import NotFound from './notFound/notFound';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
+    zIndex: theme.zIndex.drawer + 1,
   },
   toolbar: {
     flexWrap: 'wrap',
@@ -21,6 +23,14 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     margin: theme.spacing(1, 1.5),
+    textDecoration: 'none',
+  },
+  title: {
+    flexGrow: 1,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    letterSpacing: '1px',
+    marginLeft: '30px',
   },
 }));
 
@@ -35,27 +45,39 @@ export default function userRouter() {
       <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
           <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-            <Link to="/">
-              <img src={require('../assets/images/vuberlogo.png')} height="60" alt="logo" />
-            </Link>
+          <Switch>
+            <Route exact path='/dashboard'>
+              <Typography component="h1" variant="h5" color="primary" noWrap className={classes.title}>
+                Dashboard
+              </Typography>
+            </Route>
+            <Route path='/dashboard/editprofile'>
+              <Typography component="h1" variant="h5" color="primary" noWrap className={classes.title}>
+                Update Profile
+              </Typography>
+            </Route>
+            <Route path='/'>
+              <Link to="/">
+                <img src={require('../assets/images/vuberlogo.png')} height="60" alt="logo" />
+              </Link>
+            </Route>
+          </Switch>
           </Typography>
           <Switch>
-
-          <ProtectedRoutes path="/dashboard">
+          <Route path="/dashboard">
             <Link to='/'>
             <IconButton onClick={() => unauthorise()}>
-              <PowerSettingsNew/>
+              <PowerSettingsNew style={{fill: "#3f51b5"}}/>
             </IconButton>
             </Link>
-          </ProtectedRoutes>
-
+          </Route>
           <Route path='/'>
             {/* For sm-xl screen sizes */}
             <Box display={{ xs: 'none', sm: 'block' }}>
-                <Link to="/logIn">
+                <Link to="/logIn" style={{textDecoration:'none'}}>
                  <Button href="#" color="primary" variant="outlined" className={classes.link}>Login</Button>
                 </Link>
-                <Link to="/register">
+                <Link to="/register" style={{textDecoration:'none'}}>
                   <Button href="#" color="primary" variant="outlined" className={classes.link}>Sign Up</Button>
                 </Link>
             </Box>
@@ -81,6 +103,7 @@ export default function userRouter() {
         <Route path="/register"><SignUp /></Route>
         <ProtectedRoutes path="/dashboard"><Dashboard /></ProtectedRoutes>
         <Route exact path="/"><Home /></Route>
+        <Route path="*"><NotFound /></Route>
       </Switch>
       </Router>
     </React.Fragment>

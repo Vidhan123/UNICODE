@@ -1,10 +1,15 @@
 const express = require('express');
 const http = require('http');
+const path = require('path');
 const passport = require('passport');
 const session = require('express-session');
+const multer = require('multer');
 const cors = require('cors');
+const upload = require('./config/upload');
 
 const userRouter = require('./routes/user');
+const profileRouter = require('./routes/profile');
+const requestRouter = require('./routes/request');
 
 require('./config/localConfig')(passport);
 require('./config/oauthConfig')(passport);
@@ -30,11 +35,22 @@ app.use(
   })
 );
 
+// File upload
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(
+  multer({
+    storage: upload.storage,
+    fileFilter: upload.fileFilter,
+  }).single('file')
+);
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 // --- Routes
-app.use('/', userRouter);
+app.use(userRouter);
+app.use(profileRouter);
+app.use(requestRouter);
 
 const server = http.createServer(app);
 server.listen(port, hostname, () => {

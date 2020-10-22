@@ -9,7 +9,7 @@ export default function SignUp() {
   const history = useHistory();
   const [isChecked, setChecked] = useState({value:true, initial:true});
   const [warn,setWarn] = useState('');
-  let initVals = { firstName: '', lastName: '', email: '', mobileNo: '', password: '', address: '', role: '' };
+  let initVals = { firstName: '', lastName: '', email: '', mobileNo: '', password: '', address: '', role: 'Customer' };
   const [vals,setVal] = useState(initVals);
 
   const [err,validate] = useValidation();
@@ -21,8 +21,8 @@ export default function SignUp() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setVal({...vals, [name]: value});
     if(name === 'role') setChecked(prev => !prev);
-    setVal({...vals, [name]: value})
   }
 
   const handleSubmit = (e) => {
@@ -47,7 +47,6 @@ export default function SignUp() {
         className={classes.button}
         startIcon={<img src={require('../assets/images/googleicon.png')} height='45' alt="googleicon" />}
         href='http://localhost:9000/auth/google'
-        disabled
         >
           Continue with Google
         </Button>
@@ -63,7 +62,7 @@ export default function SignUp() {
               <FormLabel component="legend">&nbsp;&nbsp;&nbsp;&nbsp;Role</FormLabel>
               <RadioGroup row aria-label="role" name="role" defaultValue="start">
                 <FormControlLabel
-                  value="customer"
+                  value="Customer"
                   control={<Radio color="primary" />}
                   label="Customer"
                   labelPlacement="start"
@@ -71,18 +70,19 @@ export default function SignUp() {
                   onChange={handleChange}
                 />
                 <FormControlLabel
-                  value="driver"
+                  value="Driver"
                   control={<Radio color="primary" />}
                   label="Driver"
                   labelPlacement="start"
                   onChange={handleChange}
                 />
                 <FormControlLabel
-                  value="admin"
+                  value="Admin"
                   control={<Radio color="primary" />}
                   label="Admin"
                   labelPlacement="start"
                   onChange={handleChange}
+                  disabled={true}
                 />
               </RadioGroup>
             </FormControl>

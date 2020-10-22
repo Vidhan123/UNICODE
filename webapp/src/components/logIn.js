@@ -1,11 +1,8 @@
 import React, { useEffect, useState }  from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Paper, Grid, Typography} from '@material-ui/core';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import useLoginStyles from './customStyles/loginStyles';
-// import { UserProvider } from './Contexts';
 import useDetails from './useDetails';
 import useAuth from './useAuth';
 import axios from 'axios';
@@ -51,7 +48,7 @@ export default function SignInSide() {
         setRes(res.data.details);
         setWarn(res.data.msg);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
   };
 
   const classes = useLoginStyles();
@@ -74,7 +71,6 @@ export default function SignInSide() {
           className={classes.button}
           startIcon={<img src={require('../assets/images/googleicon.png')} height='45' alt="googleicon" />}
           href='http://localhost:9000/auth/google'
-          disabled
           >
             Continue with Google
           </Button>
@@ -106,10 +102,6 @@ export default function SignInSide() {
               autoComplete="current-password"
               onChange={handleChange}
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Typography component="h6" variant="h6" className={warn !== '' ? classes.show : classes.hidden}>
               {warn}
             </Typography>
@@ -123,11 +115,6 @@ export default function SignInSide() {
               Sign In
             </Button>
             <Grid container>
-              {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
               <Grid item>
                 <Link to="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
