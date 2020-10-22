@@ -16,16 +16,20 @@ opts.secretOrKey = secretKey;
 
 exports.jwtPassport = passport.use(
   new JwtStrategy(opts, (jwtPayload, done) => {
-    // eslint-disable-next-line no-underscore-dangle
-    User.findOne({ email: jwtPayload.email }, (err, user) => {
-      if (err) {
-        return done(err, false);
-      }
-      if (user) {
-        return done(null, user);
-      }
-      return done(null, false);
-    });
+    try {
+      // eslint-disable-next-line no-underscore-dangle
+      User.findOne({ email: jwtPayload.email }, (err, user) => {
+        if (err) {
+          return done(err, false);
+        }
+        if (user) {
+          return done(null, user);
+        }
+        return done(null, false);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   })
 );
 
