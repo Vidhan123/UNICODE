@@ -91,6 +91,6 @@
 
 #### Driver Side
 
-![Choose Customer](/screenshots/acceptReq.png)
+![Choose Customer](/screenshots/driverDashboard2.png)
 
-![Route](/screenshots/driverDashboard2.png)
+![Route](/screenshots/acceptReq.png)
