@@ -40,7 +40,7 @@ describe(config.GROUP_USER_TESTS, () => {
     const res1 = await chai
       .request(app)
       .get('/allReqs')
-      .set('access_token', `${token}`)
+      .set('Authorization', `Bearer ${token}`)
       .send({});
     expect(res1).to.have.status(200);
   });
