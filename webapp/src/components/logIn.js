@@ -102,7 +102,7 @@ export default function SignInSide() {
               autoComplete="current-password"
               onChange={handleChange}
             />
-            <Typography component="h6" variant="h6" className={warn !== '' ? classes.show : classes.hidden}>
+            <Typography component="h6" variant="h6" className={warn !== '' ? classes.show : classes.hidden} id="msg">
               {warn}
             </Typography>
             <Button

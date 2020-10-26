@@ -10,7 +10,8 @@
 ├── constants/            
 ├── controllers/        
 ├── models/               
-├── routes/                 
+├── routes/
+├── test/                 
 ├── webapp/                 
 ├── app.js                 
 └── package.json
@@ -55,7 +56,7 @@
 
 #### Dashboard
 
-##### User Dashboard
+##### Customer Dashboard
 
 ![User Dashboard](/screenshots/userDashboard.png)
 

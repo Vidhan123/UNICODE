@@ -51,6 +51,8 @@ exports.ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.json({ msg: 'Not Authenticated' });
+  if (!req.isAuthenticated()) {
+    res.status(401).json({ msg: 'Not Authenticated' });
+  }
   return false;
 };
